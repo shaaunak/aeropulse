@@ -1,0 +1,39 @@
+# Dependencies & environments
+node_modules/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+
+# Local cache & OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Large datasets & raw downloads (fetchable via scripts/fetch_cmapss.sh)
+data/raw/
+data/processed/
+*.zip
+
+# PyTorch binary checkpoints (trained via make train)
+*.pt
+*.pth
+*.pkl
+
+# Ephemeral dev/planning files & kit instructions
+AGENTS.md
+START_HERE.md
+VERIFICATION_STATUS.md
+prompts/
+specs/
+starter/
+docs/PROGRESS.md

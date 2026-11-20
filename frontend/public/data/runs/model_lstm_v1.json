@@ -1,0 +1,747 @@
+{
+  "run_id": "model_lstm_v1",
+  "model_name": "Causal 2-Layer LSTM",
+  "dataset": "NASA C-MAPSS FD001",
+  "training_history": [
+    {
+      "epoch": 1,
+      "train_mse": 7136.3723,
+      "val_rmse_cap": 73.6242,
+      "val_mae_cap": 62.8723,
+      "val_rmse_uncap": 92.9273,
+      "val_mae_uncap": 74.6399
+    },
+    {
+      "epoch": 2,
+      "train_mse": 3876.1365,
+      "val_rmse_cap": 45.729,
+      "val_mae_cap": 36.7225,
+      "val_rmse_uncap": 66.8487,
+      "val_mae_uncap": 48.4902
+    },
+    {
+      "epoch": 3,
+      "train_mse": 1152.8966,
+      "val_rmse_cap": 18.3765,
+      "val_mae_cap": 15.2243,
+      "val_rmse_uncap": 40.1299,
+      "val_mae_uncap": 26.9919
+    },
+    {
+      "epoch": 4,
+      "train_mse": 428.4829,
+      "val_rmse_cap": 13.0087,
+      "val_mae_cap": 10.1052,
+      "val_rmse_uncap": 33.8959,
+      "val_mae_uncap": 21.8729
+    },
+    {
+      "epoch": 5,
+      "train_mse": 355.4906,
+      "val_rmse_cap": 13.4486,
+      "val_mae_cap": 10.4065,
+      "val_rmse_uncap": 33.4289,
+      "val_mae_uncap": 22.1741
+    },
+    {
+      "epoch": 6,
+      "train_mse": 329.1672,
+      "val_rmse_cap": 12.7869,
+      "val_mae_cap": 9.4833,
+      "val_rmse_uncap": 32.6885,
+      "val_mae_uncap": 21.2509
+    },
+    {
+      "epoch": 7,
+      "train_mse": 315.4267,
+      "val_rmse_cap": 13.0736,
+      "val_mae_cap": 9.5133,
+      "val_rmse_uncap": 32.696,
+      "val_mae_uncap": 21.2809
+    },
+    {
+      "epoch": 8,
+      "train_mse": 310.8664,
+      "val_rmse_cap": 13.231,
+      "val_mae_cap": 10.0734,
+      "val_rmse_uncap": 32.6539,
+      "val_mae_uncap": 21.841
+    },
+    {
+      "epoch": 9,
+      "train_mse": 301.2935,
+      "val_rmse_cap": 13.104,
+      "val_mae_cap": 9.4474,
+      "val_rmse_uncap": 32.5029,
+      "val_mae_uncap": 21.2151
+    },
+    {
+      "epoch": 10,
+      "train_mse": 292.6564,
+      "val_rmse_cap": 12.8589,
+      "val_mae_cap": 9.3202,
+      "val_rmse_uncap": 32.5585,
+      "val_mae_uncap": 21.0878
+    },
+    {
+      "epoch": 11,
+      "train_mse": 278.5591,
+      "val_rmse_cap": 14.1065,
+      "val_mae_cap": 9.8256,
+      "val_rmse_uncap": 32.2101,
+      "val_mae_uncap": 21.5932
+    },
+    {
+      "epoch": 12,
+      "train_mse": 278.5621,
+      "val_rmse_cap": 14.1176,
+      "val_mae_cap": 9.9138,
+      "val_rmse_uncap": 33.1636,
+      "val_mae_uncap": 21.6814
+    },
+    {
+      "epoch": 13,
+      "train_mse": 265.8151,
+      "val_rmse_cap": 14.0085,
+      "val_mae_cap": 9.7316,
+      "val_rmse_uncap": 32.4442,
+      "val_mae_uncap": 21.4992
+    },
+    {
+      "epoch": 14,
+      "train_mse": 274.5605,
+      "val_rmse_cap": 14.01,
+      "val_mae_cap": 9.989,
+      "val_rmse_uncap": 33.0302,
+      "val_mae_uncap": 21.7566
+    },
+    {
+      "epoch": 15,
+      "train_mse": 262.0813,
+      "val_rmse_cap": 13.6887,
+      "val_mae_cap": 10.045,
+      "val_rmse_uncap": 33.4515,
+      "val_mae_uncap": 21.8126
+    },
+    {
+      "epoch": 16,
+      "train_mse": 252.7679,
+      "val_rmse_cap": 14.1845,
+      "val_mae_cap": 9.8574,
+      "val_rmse_uncap": 33.3822,
+      "val_mae_uncap": 21.6251
+    }
+  ],
+  "metrics": {
+    "rmse": 15.7545,
+    "mae": 10.5787,
+    "nasa_score": 418.66,
+    "sample_count": 100,
+    "mean_error": -3.4612,
+    "std_error": 15.3696,
+    "max_overestimate": 45.7607,
+    "max_underestimate": -47.9993
+  },
+  "test_scatter": [
+    {
+      "unit_id": 1,
+      "true_rul": 112.0,
+      "predicted_rul": 112.1,
+      "error": 0.1
+    },
+    {
+      "unit_id": 2,
+      "true_rul": 98.0,
+      "predicted_rul": 118.58,
+      "error": 20.58
+    },
+    {
+      "unit_id": 3,
+      "true_rul": 69.0,
+      "predicted_rul": 34.28,
+      "error": -34.72
+    },
+    {
+      "unit_id": 4,
+      "true_rul": 82.0,
+      "predicted_rul": 80.36,
+      "error": -1.64
+    },
+    {
+      "unit_id": 5,
+      "true_rul": 91.0,
+      "predicted_rul": 82.13,
+      "error": -8.87
+    },
+    {
+      "unit_id": 6,
+      "true_rul": 93.0,
+      "predicted_rul": 101.0,
+      "error": 8.0
+    },
+    {
+      "unit_id": 7,
+      "true_rul": 91.0,
+      "predicted_rul": 91.75,
+      "error": 0.75
+    },
+    {
+      "unit_id": 8,
+      "true_rul": 95.0,
+      "predicted_rul": 102.86,
+      "error": 7.86
+    },
+    {
+      "unit_id": 9,
+      "true_rul": 111.0,
+      "predicted_rul": 118.66,
+      "error": 7.66
+    },
+    {
+      "unit_id": 10,
+      "true_rul": 96.0,
+      "predicted_rul": 88.11,
+      "error": -7.89
+    },
+    {
+      "unit_id": 11,
+      "true_rul": 97.0,
+      "predicted_rul": 51.1,
+      "error": -45.9
+    },
+    {
+      "unit_id": 12,
+      "true_rul": 124.0,
+      "predicted_rul": 96.04,
+      "error": -27.96
+    },
+    {
+      "unit_id": 13,
+      "true_rul": 95.0,
+      "predicted_rul": 74.01,
+      "error": -20.99
+    },
+    {
+      "unit_id": 14,
+      "true_rul": 107.0,
+      "predicted_rul": 105.95,
+      "error": -1.05
+    },
+    {
+      "unit_id": 15,
+      "true_rul": 83.0,
+      "predicted_rul": 98.18,
+      "error": 15.18
+    },
+    {
+      "unit_id": 16,
+      "true_rul": 84.0,
+      "predicted_rul": 90.34,
+      "error": 6.34
+    },
+    {
+      "unit_id": 17,
+      "true_rul": 50.0,
+      "predicted_rul": 48.6,
+      "error": -1.4
+    },
+    {
+      "unit_id": 18,
+      "true_rul": 28.0,
+      "predicted_rul": 26.11,
+      "error": -1.89
+    },
+    {
+      "unit_id": 19,
+      "true_rul": 87.0,
+      "predicted_rul": 91.31,
+      "error": 4.31
+    },
+    {
+      "unit_id": 20,
+      "true_rul": 16.0,
+      "predicted_rul": 14.05,
+      "error": -1.95
+    },
+    {
+      "unit_id": 21,
+      "true_rul": 57.0,
+      "predicted_rul": 65.81,
+      "error": 8.81
+    },
+    {
+      "unit_id": 22,
+      "true_rul": 111.0,
+      "predicted_rul": 119.72,
+      "error": 8.72
+    },
+    {
+      "unit_id": 23,
+      "true_rul": 113.0,
+      "predicted_rul": 116.65,
+      "error": 3.65
+    },
+    {
+      "unit_id": 24,
+      "true_rul": 20.0,
+      "predicted_rul": 20.83,
+      "error": 0.83
+    },
+    {
+      "unit_id": 25,
+      "true_rul": 145.0,
+      "predicted_rul": 108.68,
+      "error": -36.32
+    },
+    {
+      "unit_id": 26,
+      "true_rul": 119.0,
+      "predicted_rul": 114.76,
+      "error": -4.24
+    },
+    {
+      "unit_id": 27,
+      "true_rul": 66.0,
+      "predicted_rul": 81.57,
+      "error": 15.57
+    },
+    {
+      "unit_id": 28,
+      "true_rul": 97.0,
+      "predicted_rul": 109.99,
+      "error": 12.99
+    },
+    {
+      "unit_id": 29,
+      "true_rul": 90.0,
+      "predicted_rul": 93.83,
+      "error": 3.83
+    },
+    {
+      "unit_id": 30,
+      "true_rul": 115.0,
+      "predicted_rul": 89.13,
+      "error": -25.87
+    },
+    {
+      "unit_id": 31,
+      "true_rul": 8.0,
+      "predicted_rul": 8.94,
+      "error": 0.94
+    },
+    {
+      "unit_id": 32,
+      "true_rul": 48.0,
+      "predicted_rul": 51.83,
+      "error": 3.83
+    },
+    {
+      "unit_id": 33,
+      "true_rul": 106.0,
+      "predicted_rul": 116.26,
+      "error": 10.26
+    },
+    {
+      "unit_id": 34,
+      "true_rul": 7.0,
+      "predicted_rul": 5.39,
+      "error": -1.61
+    },
+    {
+      "unit_id": 35,
+      "true_rul": 11.0,
+      "predicted_rul": 7.05,
+      "error": -3.95
+    },
+    {
+      "unit_id": 36,
+      "true_rul": 19.0,
+      "predicted_rul": 18.47,
+      "error": -0.53
+    },
+    {
+      "unit_id": 37,
+      "true_rul": 21.0,
+      "predicted_rul": 18.48,
+      "error": -2.52
+    },
+    {
+      "unit_id": 38,
+      "true_rul": 50.0,
+      "predicted_rul": 48.7,
+      "error": -1.3
+    },
+    {
+      "unit_id": 39,
+      "true_rul": 142.0,
+      "predicted_rul": 119.49,
+      "error": -22.51
+    },
+    {
+      "unit_id": 40,
+      "true_rul": 28.0,
+      "predicted_rul": 28.87,
+      "error": 0.87
+    },
+    {
+      "unit_id": 41,
+      "true_rul": 18.0,
+      "predicted_rul": 16.73,
+      "error": -1.27
+    },
+    {
+      "unit_id": 42,
+      "true_rul": 10.0,
+      "predicted_rul": 8.47,
+      "error": -1.53
+    },
+    {
+      "unit_id": 43,
+      "true_rul": 59.0,
+      "predicted_rul": 53.72,
+      "error": -5.28
+    },
+    {
+      "unit_id": 44,
+      "true_rul": 109.0,
+      "predicted_rul": 89.34,
+      "error": -19.66
+    },
+    {
+      "unit_id": 45,
+      "true_rul": 114.0,
+      "predicted_rul": 66.0,
+      "error": -48.0
+    },
+    {
+      "unit_id": 46,
+      "true_rul": 47.0,
+      "predicted_rul": 36.77,
+      "error": -10.23
+    },
+    {
+      "unit_id": 47,
+      "true_rul": 135.0,
+      "predicted_rul": 102.84,
+      "error": -32.16
+    },
+    {
+      "unit_id": 48,
+      "true_rul": 92.0,
+      "predicted_rul": 100.77,
+      "error": 8.77
+    },
+    {
+      "unit_id": 49,
+      "true_rul": 21.0,
+      "predicted_rul": 15.02,
+      "error": -5.98
+    },
+    {
+      "unit_id": 50,
+      "true_rul": 79.0,
+      "predicted_rul": 78.26,
+      "error": -0.74
+    },
+    {
+      "unit_id": 51,
+      "true_rul": 114.0,
+      "predicted_rul": 102.62,
+      "error": -11.38
+    },
+    {
+      "unit_id": 52,
+      "true_rul": 29.0,
+      "predicted_rul": 32.95,
+      "error": 3.95
+    },
+    {
+      "unit_id": 53,
+      "true_rul": 26.0,
+      "predicted_rul": 32.35,
+      "error": 6.35
+    },
+    {
+      "unit_id": 54,
+      "true_rul": 97.0,
+      "predicted_rul": 116.83,
+      "error": 19.83
+    },
+    {
+      "unit_id": 55,
+      "true_rul": 137.0,
+      "predicted_rul": 107.96,
+      "error": -29.04
+    },
+    {
+      "unit_id": 56,
+      "true_rul": 15.0,
+      "predicted_rul": 8.99,
+      "error": -6.01
+    },
+    {
+      "unit_id": 57,
+      "true_rul": 103.0,
+      "predicted_rul": 100.73,
+      "error": -2.27
+    },
+    {
+      "unit_id": 58,
+      "true_rul": 37.0,
+      "predicted_rul": 35.4,
+      "error": -1.6
+    },
+    {
+      "unit_id": 59,
+      "true_rul": 114.0,
+      "predicted_rul": 107.1,
+      "error": -6.9
+    },
+    {
+      "unit_id": 60,
+      "true_rul": 100.0,
+      "predicted_rul": 111.22,
+      "error": 11.22
+    },
+    {
+      "unit_id": 61,
+      "true_rul": 21.0,
+      "predicted_rul": 18.74,
+      "error": -2.26
+    },
+    {
+      "unit_id": 62,
+      "true_rul": 54.0,
+      "predicted_rul": 44.51,
+      "error": -9.49
+    },
+    {
+      "unit_id": 63,
+      "true_rul": 72.0,
+      "predicted_rul": 84.3,
+      "error": 12.3
+    },
+    {
+      "unit_id": 64,
+      "true_rul": 28.0,
+      "predicted_rul": 27.61,
+      "error": -0.39
+    },
+    {
+      "unit_id": 65,
+      "true_rul": 128.0,
+      "predicted_rul": 120.13,
+      "error": -7.87
+    },
+    {
+      "unit_id": 66,
+      "true_rul": 14.0,
+      "predicted_rul": 17.34,
+      "error": 3.34
+    },
+    {
+      "unit_id": 67,
+      "true_rul": 77.0,
+      "predicted_rul": 115.09,
+      "error": 38.09
+    },
+    {
+      "unit_id": 68,
+      "true_rul": 8.0,
+      "predicted_rul": 8.98,
+      "error": 0.98
+    },
+    {
+      "unit_id": 69,
+      "true_rul": 121.0,
+      "predicted_rul": 119.08,
+      "error": -1.92
+    },
+    {
+      "unit_id": 70,
+      "true_rul": 94.0,
+      "predicted_rul": 89.83,
+      "error": -4.17
+    },
+    {
+      "unit_id": 71,
+      "true_rul": 118.0,
+      "predicted_rul": 110.03,
+      "error": -7.97
+    },
+    {
+      "unit_id": 72,
+      "true_rul": 50.0,
+      "predicted_rul": 59.21,
+      "error": 9.21
+    },
+    {
+      "unit_id": 73,
+      "true_rul": 131.0,
+      "predicted_rul": 102.33,
+      "error": -28.67
+    },
+    {
+      "unit_id": 74,
+      "true_rul": 126.0,
+      "predicted_rul": 99.86,
+      "error": -26.14
+    },
+    {
+      "unit_id": 75,
+      "true_rul": 113.0,
+      "predicted_rul": 103.08,
+      "error": -9.92
+    },
+    {
+      "unit_id": 76,
+      "true_rul": 10.0,
+      "predicted_rul": 9.23,
+      "error": -0.77
+    },
+    {
+      "unit_id": 77,
+      "true_rul": 34.0,
+      "predicted_rul": 20.82,
+      "error": -13.18
+    },
+    {
+      "unit_id": 78,
+      "true_rul": 107.0,
+      "predicted_rul": 120.36,
+      "error": 13.36
+    },
+    {
+      "unit_id": 79,
+      "true_rul": 63.0,
+      "predicted_rul": 108.76,
+      "error": 45.76
+    },
+    {
+      "unit_id": 80,
+      "true_rul": 90.0,
+      "predicted_rul": 90.71,
+      "error": 0.71
+    },
+    {
+      "unit_id": 81,
+      "true_rul": 8.0,
+      "predicted_rul": 4.97,
+      "error": -3.03
+    },
+    {
+      "unit_id": 82,
+      "true_rul": 9.0,
+      "predicted_rul": 9.34,
+      "error": 0.34
+    },
+    {
+      "unit_id": 83,
+      "true_rul": 137.0,
+      "predicted_rul": 119.34,
+      "error": -17.66
+    },
+    {
+      "unit_id": 84,
+      "true_rul": 58.0,
+      "predicted_rul": 68.12,
+      "error": 10.12
+    },
+    {
+      "unit_id": 85,
+      "true_rul": 118.0,
+      "predicted_rul": 119.77,
+      "error": 1.77
+    },
+    {
+      "unit_id": 86,
+      "true_rul": 89.0,
+      "predicted_rul": 113.3,
+      "error": 24.3
+    },
+    {
+      "unit_id": 87,
+      "true_rul": 116.0,
+      "predicted_rul": 113.56,
+      "error": -2.44
+    },
+    {
+      "unit_id": 88,
+      "true_rul": 115.0,
+      "predicted_rul": 110.14,
+      "error": -4.86
+    },
+    {
+      "unit_id": 89,
+      "true_rul": 136.0,
+      "predicted_rul": 113.6,
+      "error": -22.4
+    },
+    {
+      "unit_id": 90,
+      "true_rul": 28.0,
+      "predicted_rul": 28.62,
+      "error": 0.62
+    },
+    {
+      "unit_id": 91,
+      "true_rul": 38.0,
+      "predicted_rul": 16.74,
+      "error": -21.26
+    },
+    {
+      "unit_id": 92,
+      "true_rul": 20.0,
+      "predicted_rul": 16.03,
+      "error": -3.97
+    },
+    {
+      "unit_id": 93,
+      "true_rul": 85.0,
+      "predicted_rul": 43.52,
+      "error": -41.48
+    },
+    {
+      "unit_id": 94,
+      "true_rul": 55.0,
+      "predicted_rul": 56.26,
+      "error": 1.26
+    },
+    {
+      "unit_id": 95,
+      "true_rul": 128.0,
+      "predicted_rul": 115.84,
+      "error": -12.16
+    },
+    {
+      "unit_id": 96,
+      "true_rul": 137.0,
+      "predicted_rul": 115.16,
+      "error": -21.84
+    },
+    {
+      "unit_id": 97,
+      "true_rul": 82.0,
+      "predicted_rul": 81.16,
+      "error": -0.84
+    },
+    {
+      "unit_id": 98,
+      "true_rul": 59.0,
+      "predicted_rul": 56.9,
+      "error": -2.1
+    },
+    {
+      "unit_id": 99,
+      "true_rul": 117.0,
+      "predicted_rul": 119.18,
+      "error": 2.18
+    },
+    {
+      "unit_id": 100,
+      "true_rul": 20.0,
+      "predicted_rul": 20.36,
+      "error": 0.36
+    }
+  ]
+}
