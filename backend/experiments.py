@@ -43,7 +43,6 @@ def run_multi_seed_benchmark(
 
     for seed in seeds:
         print(f"\n--- SEED {seed} ---")
-        set_seed(seed)
 
         # 1. Pipeline preparation with strict train-only split & scaling
         pipeline = CMAPSSDataPipeline(data_dir="data/raw", window_size=30, rul_cap=125.0, seed=seed).fit_and_prepare()
@@ -58,7 +57,8 @@ def run_multi_seed_benchmark(
         )
         criterion = nn.MSELoss()
 
-        # 2. Train LSTM
+        # 2. Train LSTM (reset seed right before LSTM model instantiation & training)
+        set_seed(seed)
         lstm = TurbofanLSTM(input_dim=input_dim, hidden_dim=hidden_dim, num_layers=num_layers, dropout=dropout).to(device)
         optimizer = torch.optim.AdamW(lstm.parameters(), lr=lr, weight_decay=1e-4)
 
@@ -86,7 +86,8 @@ def run_multi_seed_benchmark(
         })
         print(f"  LSTM | Val RMSE: {best_lstm_val:.2f} | Test RMSE: {lstm_test_m['rmse']:.2f} | MAE: {lstm_test_m['mae']:.2f} | NASA: {lstm_test_m['nasa_score']:.1f}")
 
-        # 3. Train GRU
+        # 3. Train GRU (reset seed right before GRU model instantiation & training to guarantee identical initial condition)
+        set_seed(seed)
         gru = TurbofanGRU(input_dim=input_dim, hidden_dim=hidden_dim, num_layers=num_layers, dropout=dropout).to(device)
         gru_opt = torch.optim.AdamW(gru.parameters(), lr=lr, weight_decay=1e-4)
 
@@ -150,10 +151,10 @@ def run_multi_seed_benchmark(
         json.dump(summary, f, indent=2)
 
     print(f"\n[AeroPulse Benchmark] Completed! Results saved to {out_file}")
-    print(f"LSTM Test RMSE: {summary['lstm']['test_rmse']['mean']} ± {summary['lstm']['test_rmse']['std']}")
-    print(f"GRU  Test RMSE: {summary['gru']['test_rmse']['mean']} ± {summary['gru']['test_rmse']['std']}")
-    print(f"LSTM NASA Score: {summary['lstm']['nasa_score']['mean']} ± {summary['lstm']['nasa_score']['std']}")
-    print(f"GRU  NASA Score: {summary['gru']['nasa_score']['mean']} ± {summary['gru']['nasa_score']['std']}")
+    print(f"LSTM Test RMSE: {summary['lstm']['test_rmse']['mean']} +/- {summary['lstm']['test_rmse']['std']}")
+    print(f"GRU  Test RMSE: {summary['gru']['test_rmse']['mean']} +/- {summary['gru']['test_rmse']['std']}")
+    print(f"LSTM NASA Score: {summary['lstm']['nasa_score']['mean']} +/- {summary['lstm']['nasa_score']['std']}")
+    print(f"GRU  NASA Score: {summary['gru']['nasa_score']['mean']} +/- {summary['gru']['nasa_score']['std']}")
 
     return summary
 

@@ -46,13 +46,11 @@ class TurbofanLSTM(nn.Module):
         Returns:
             Tensor of shape (batch_size,) representing predicted RUL in cycles
         """
-        # lstm_out: (batch_size, seq_len, hidden_dim)
         lstm_out, _ = self.lstm(x)
-        # Take the causal endpoint representation (last time step)
         endpoint_feat = lstm_out[:, -1, :]
-        out = self.fc_head(endpoint_feat).squeeze(-1)
-        # Predictions cannot be negative cycles
-        return torch.clamp(out, min=0.0)
+        raw_pred = self.fc_head(endpoint_feat).squeeze(-1)
+        # Using softplus ensures strictly smooth positive outputs and prevents dying zero-gradient deadlocks
+        return nn.functional.softplus(raw_pred)
 
 
 class TurbofanGRU(nn.Module):
@@ -88,8 +86,8 @@ class TurbofanGRU(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         gru_out, _ = self.gru(x)
         endpoint_feat = gru_out[:, -1, :]
-        out = self.fc_head(endpoint_feat).squeeze(-1)
-        return torch.clamp(out, min=0.0)
+        raw_pred = self.fc_head(endpoint_feat).squeeze(-1)
+        return nn.functional.softplus(raw_pred)
 
 
 def extract_tabular_features(X_windows: np.ndarray) -> np.ndarray:
