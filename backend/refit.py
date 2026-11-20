@@ -44,7 +44,7 @@ def run_final_refit(
 
     print(f"[AeroPulse Refit] Training on ALL 100 development engines for {epochs} epochs (determined via validation)...")
 
-    pipeline = CMAPSSDataPipeline(data_dir="data/raw", window_size=30, rul_cap=125.0, seed=seed).fit_and_prepare()
+    pipeline = CMAPSSDataPipeline(data_dir="data/raw", window_size=30, rul_cap=125.0, seed=seed).fit_and_prepare(refit_all_100=True)
     X_all, y_all_cap, y_all_uncap, _ = pipeline.get_full_development_windows()
     X_test_last, y_test_true, _ = pipeline.get_official_test_windows()
 

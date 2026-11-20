@@ -4,7 +4,7 @@
 - **Architecture**: Causal Sequence-to-One 2-Layer Recurrent Neural Network (LSTM / GRU) with intermediate dropout and fully connected linear head.
 - **Input Dimension**: 30 historical operating cycles x 17 normalized features (15 aerothermal sensor channels + 2 operational settings).
 - **Recurrent Hidden Dimensions**: 64 units per recurrent layer.
-- **Dense Projection**: 64 -> 32 -> 1 with ReLU activation and non-negative clamping.
+- **Dense Projection**: 64 -> 32 -> 1 with smooth positive Softplus activation to guarantee positive predictions without vanishing gradient traps.
 - **Dropout Rate**: 0.20 between recurrent layers and preceding linear projection.
 - **Trainable Parameters**: 55,233 (LSTM) / 42,881 (GRU).
 - **Optimization Objective**: Mean Squared Error (MSE) on piecewise-linear capped RUL targets (125-cycle cap).
@@ -16,11 +16,14 @@
 - **Out-of-Scope**: This software is **NOT certified for actual aircraft airworthiness, real-time flight operations, or flight dispatch**. It is strictly a benchmarked research application trained on synthetic engine simulator runs.
 
 ## 3. Model Selection & Multi-Seed Validation
-- **Selection Protocol**: Models are selected based on cross-validation on an 80/20 engine-disjoint development split (80 training engines, 20 validation engines). The held-out official test set (100 engines) is never used for architecture tuning or early stopping.
+- **Selection Protocol**: Models are selected based strictly on development validation evidence on an 80/20 engine-disjoint development split (80 training engines, 20 validation engines). The held-out official test set (100 engines) is never used for architecture tuning or early stopping.
 - **Multi-Seed Benchmark (5 Seeds: 42, 123, 456, 789, 1011)**:
-  - **Causal LSTM Test RMSE (Uncapped)**: 15.66 +/- 0.34 cycles | **NASA Score**: 447.41 +/- 80.24
-  - **Causal GRU Test RMSE (Uncapped)**: 29.70 +/- 31.58 cycles | **NASA Score**: 112,175.54 +/- 249,792.38
-- **Statistical Findings**: While GRU can achieve lower RMSE on specific runs, LSTM demonstrates significantly higher optimization stability across random initializations. GRU exhibited optimization failure (gradient divergence) on seed 456 (Test RMSE: 86.20), whereas LSTM consistently converged with tight variance (sigma = 0.34 cycles).
+  - **Causal LSTM Val RMSE**: 13.39 +/- 0.72 cycles | **Test RMSE (Uncapped)**: 15.89 +/- 0.90 cycles | **NASA Score**: 441.69 +/- 69.96
+  - **Causal GRU Val RMSE**: 12.97 +/- 0.62 cycles | **Test RMSE (Uncapped)**: 15.29 +/- 0.36 cycles | **NASA Score**: 488.76 +/- 119.28
+- **Statistical Findings & Convergence Stability**:
+  - Across all 5 random seeds, both models achieved 100% convergence stability with zero divergences after replacing hard clamping with `nn.functional.softplus`.
+  - Development validation RMSE selects GRU as slightly superior on average validation loss ($12.97 \pm 0.62$ vs $13.39 \pm 0.72$), while LSTM maintains lower variance under asymmetric penalties.
+  - Final refitting on all 100 development engines (with feature selection and scaling fitted exclusively on all 100 dev engines) achieves official test RMSE of 15.62 cycles (14.08 capped) and NASA score of 371.74.
 
 ## 4. Evaluation Metrics & Asymmetric Penalty
 - **Root Mean Squared Error (RMSE)**: sqrt(mean((y_pred - y_true)^2))

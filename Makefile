@@ -34,7 +34,7 @@ refit:
 
 # Run multi-seed reproducibility benchmark (5 seeds)
 benchmark:
-	PYTHONPATH=. .venv/bin/python backend/experiments.py --epochs 12
+	PYTHONPATH=. .venv/bin/python backend/experiments.py --epochs 10
 
 # Generate publication diagnostic figures
 figures:

@@ -2,7 +2,7 @@
 
 [![AeroPulse CI](https://github.com/shaaunak/aeropulse/actions/workflows/ci.yml/badge.svg)](https://github.com/shaaunak/aeropulse/actions/workflows/ci.yml)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-FF5E39?style=for-the-badge&logo=vercel&logoColor=white)](https://frontend-shaaunak.vercel.app)
-[![License: MIT](https://img.shields.io/badge/License-MIT-101411.svg?style=for-the-badge)](LICENSE)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-101411.svg?style=for-the-badge)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B%20(Tested%203.12)-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![PyTorch: 2.x](https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org)
 [![React: 18](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
@@ -56,23 +56,23 @@ All models were evaluated strictly on the **100 official test engines** against 
 
 ### 1. Multi-Seed Benchmark (5 Independent Seeds: 42, 123, 456, 789, 1011)
 
-| Model Architecture | Test RMSE (Uncapped) | Test MAE (Uncapped) | NASA Score | Convergence Stability |
-| :--- | :---: | :---: | :---: | :---: |
-| **Causal 2-Layer LSTM** | **15.66 &plusmn; 0.34** | **11.39 &plusmn; 0.63** | **447.41 &plusmn; 80.24** | **100% (5/5 converged)** |
-| **Causal 2-Layer GRU** | **29.70 &plusmn; 31.58** | **24.10 &plusmn; 28.78** | **112,175.54 &plusmn; 249,792.38** | **80% (1/5 diverged)** |
+| Model Architecture | Val RMSE (Capped) | Test RMSE (Uncapped) | Test MAE (Uncapped) | NASA Score | Convergence Stability |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Causal 2-Layer LSTM** | **13.39 &plusmn; 0.72** | **15.89 &plusmn; 0.90** | **11.56 &plusmn; 0.61** | **441.69 &plusmn; 69.96** | **100% (5/5 converged)** |
+| **Causal 2-Layer GRU** | **12.97 &plusmn; 0.62** | **15.29 &plusmn; 0.36** | **10.93 &plusmn; 0.20** | **488.76 &plusmn; 119.28** | **100% (5/5 converged)** |
 
-*Model Selection Rationale: While GRU achieves competitive performance on specific runs (e.g. Seed 42), the Causal LSTM demonstrates substantially superior convergence stability across random initializations (&sigma;<sub>RMSE</sub> = 0.34 vs 31.58 for GRU).*
+*Model Selection Protocol: Architecture selection is decided strictly on development validation evidence: GRU achieves lower mean validation RMSE (12.97 vs 13.39), while LSTM exhibits lower penalty variance under asymmetric scoring. All runs utilize smooth positive activations (`softplus`) to eliminate dying-activation deadlocks, ensuring 100% stable convergence across initializations.*
 
 ### 2. Single Run (Seed 42) Checkpoint Comparison
 
 | Model Architecture | Context Horizon | Val RMSE (Capped) | Test RMSE (Uncapped) | Test MAE | NASA Asymmetric Score |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Causal 2-Layer LSTM** (`model_lstm_v1`) | 30 cycles | 12.79 | **15.75** | **10.58** | **418.66** |
-| **Causal 2-Layer GRU** (`model_gru_v1`) | 30 cycles | 12.29 | **15.01** | **10.22** | **401.65** |
+| **Causal 2-Layer LSTM** (`model_lstm_v1`) | 30 cycles | 12.43 | **15.35** | **11.19** | **396.84** |
+| **Causal 2-Layer GRU** (`model_gru_v1`) | 30 cycles | 12.05 | **15.75** | **11.23** | **636.07** |
 | **Tabular Ridge Baseline** | 30c statistics | N/A | **18.98** | **13.41** | **612.67** |
 | **Median Target Persistence** | None | N/A | **43.69** | **38.12** | **41,530.95** |
 
-*Note on Target Conventions: During training, targets are capped at 125 cycles to stabilize early-life gradient descent. Evaluated under the capped convention, the LSTM achieves a Test RMSE of **14.39** cycles.*
+*Note on Full Development Refit: Training on all 100 development engines (re-fitting feature selection and standard scaling exclusively on all 100 dev engines, excluding test data) for 6 validation-selected epochs yields an official Test RMSE of **15.62** cycles (**14.08** capped) and NASA score of **371.74**.*
 
 ---
 
@@ -109,7 +109,8 @@ All models were evaluated strictly on the **100 official test engines** against 
 | :--- | :---: | :---: | :---: |
 | **Heimes (2008)** | Recurrent Neural Network (PHM08 landmark) | 16.98 | Official 100 test engines |
 | **Zheng et al. (2017)** | Multilayer LSTM (Window = 30) | 16.14 | Official 100 test engines |
-| **AeroPulse (Ours)** | **Causal 2-Layer LSTM (5-seed mean)** | **15.66 &plusmn; 0.34** | Strict leakage-safe preprocessing |
+| **AeroPulse (Ours)** | **Causal 2-Layer LSTM (5-seed mean)** | **15.89 &plusmn; 0.90** | Strict leakage-safe preprocessing |
+| **AeroPulse (Ours)** | **Causal 2-Layer GRU (5-seed mean)** | **15.29 &plusmn; 0.36** | Strict leakage-safe preprocessing |
 | **Li et al. (2018)** | Deep Convolutional Neural Network | 12.61 | Capped 125-cycle target |
 
 ---
@@ -228,4 +229,4 @@ aeropulse/
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [Apache License 2.0](LICENSE).

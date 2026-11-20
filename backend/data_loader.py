@@ -151,8 +151,16 @@ class CMAPSSDataPipeline:
         self.raw_test_df: Optional[pd.DataFrame] = None
         self.test_rul_series: Optional[pd.Series] = None
 
-    def fit_and_prepare(self):
-        """Execute leakage-safe ingestion, split, feature selection, and scaler fit."""
+    def fit_and_prepare(self, refit_all_100: bool = False):
+        """Execute leakage-safe ingestion, split, feature selection, and scaler fit.
+
+        If refit_all_100 is True:
+            Feature selection and standard scaling are fitted on ALL 100 development engines
+            (strictly excluding any test engines). This is used for the final refit production model.
+        If refit_all_100 is False (default):
+            Feature selection and standard scaling are fitted ONLY on the 80 training split engines,
+            leaving the 20 validation engines completely untouched for unbiased model comparison.
+        """
         train_df, test_df, rul_series = load_raw_frames(self.data_dir)
         self.raw_train_df = train_df
         self.raw_test_df = test_df
@@ -162,19 +170,23 @@ class CMAPSSDataPipeline:
             total_engines=100, val_ratio=self.val_ratio, seed=self.seed
         )
 
-        # Slice train-split rows ONLY for fitting feature selector and scaler
-        train_split_rows = train_df[train_df["unit_id"].isin(self.train_units)].copy()
+        if refit_all_100:
+            # Fit feature selector and scaler on ALL 100 development engines (excluding test)
+            fit_df = train_df.copy()
+        else:
+            # Slice train-split rows ONLY (80 engines) for fitting feature selector and scaler
+            fit_df = train_df[train_df["unit_id"].isin(self.train_units)].copy()
 
         # Identify candidate feature columns (settings + sensors)
         candidate_cols = [c for c in COLUMN_NAMES if c not in ["unit_id", "cycle"]]
 
-        # Variance check on train-split ONLY
-        variances = train_split_rows[candidate_cols].var()
+        # Variance check on development fit data ONLY
+        variances = fit_df[candidate_cols].var()
         self.selected_features = sorted(variances[variances > self.variance_threshold].index.tolist())
         self.dropped_features = sorted(variances[variances <= self.variance_threshold].index.tolist())
 
-        # Fit StandardScaler on train-split rows ONLY
-        self.scaler.fit(train_split_rows[self.selected_features])
+        # Fit StandardScaler on development fit rows ONLY
+        self.scaler.fit(fit_df[self.selected_features])
 
         return self
 

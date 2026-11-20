@@ -24,40 +24,44 @@ In seed 42, the models were trained on 80 development engines with early stoppin
 
 ## 2. Multi-Seed Scientific Reproducibility Benchmark (5 Seeds)
 
-To prevent cherry-picking single-seed results, both recurrent architectures were evaluated across 5 independent seeds (`42, 123, 456, 789, 1011`):
+To prevent cherry-picking single-seed results, both recurrent architectures were evaluated across 5 independent seeds (`42, 123, 456, 789, 1011`) using identical engine-disjoint development splits, controlled initializations, and softplus positive activations:
 
-| Model Architecture | Test RMSE (Cycles) | Test MAE (Cycles) | NASA Asymmetric Score | Convergence Stability |
-| :--- | :---: | :---: | :---: | :---: |
-| **Causal 2-Layer LSTM** | **15.66 ± 0.34** | **11.39 ± 0.63** | **447.41 ± 80.24** | **100% (5/5 converged)** |
-| **Causal 2-Layer GRU** | **29.70 ± 31.58** | **24.10 ± 28.78** | **112,175.54 ± 249,792.38** | **80% (1/5 diverged on seed 456)** |
+| Model Architecture | Val RMSE (Cycles) | Test RMSE (Cycles) | Test MAE (Cycles) | NASA Asymmetric Score | Convergence Stability |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Causal 2-Layer LSTM** | **13.39 ± 0.72** | **15.89 ± 0.90** | **11.56 ± 0.61** | **441.69 ± 69.96** | **100% (5/5 converged)** |
+| **Causal 2-Layer GRU** | **12.97 ± 0.62** | **15.29 ± 0.36** | **10.93 ± 0.20** | **488.76 ± 119.28** | **100% (5/5 converged)** |
 
 ### Per-Seed Results Breakdown
 
 #### Causal LSTM
-- Seed 42: Test RMSE: **15.75** | MAE: **10.58** | NASA: **418.66** | Val RMSE: 12.79
-- Seed 123: Test RMSE: **15.62** | MAE: **11.56** | NASA: **380.32** | Val RMSE: 13.09
-- Seed 456: Test RMSE: **15.11** | MAE: **10.92** | NASA: **586.14** | Val RMSE: 14.04
-- Seed 789: Test RMSE: **15.82** | MAE: **11.87** | NASA: **437.45** | Val RMSE: 14.25
-- Seed 1011: Test RMSE: **16.02** | MAE: **12.00** | NASA: **414.47** | Val RMSE: 13.02
+- Seed 42: Val RMSE: **12.43** | Test RMSE: **15.35** | MAE: **11.19** | NASA: **396.84**
+- Seed 123: Val RMSE: **13.46** | Test RMSE: **16.29** | MAE: **11.57** | NASA: **419.80**
+- Seed 456: Val RMSE: **13.99** | Test RMSE: **15.45** | MAE: **11.46** | NASA: **540.93**
+- Seed 789: Val RMSE: **14.14** | Test RMSE: **15.07** | MAE: **10.99** | NASA: **367.51**
+- Seed 1011: Val RMSE: **12.92** | Test RMSE: **17.29** | MAE: **12.57** | NASA: **483.38**
 
 #### Causal GRU
-- Seed 42: Test RMSE: **15.05** | MAE: **10.81** | NASA: **387.52** | Val RMSE: 11.66
-- Seed 123: Test RMSE: **15.69** | MAE: **11.61** | NASA: **355.48** | Val RMSE: 13.12
-- Seed 456: Test RMSE: **86.20** | MAE: **75.52** | NASA: **559,017.68** | Val RMSE: 92.70 (Diverged)
-- Seed 789: Test RMSE: **15.71** | MAE: **11.03** | NASA: **478.53** | Val RMSE: 13.70
-- Seed 1011: Test RMSE: **15.87** | MAE: **11.53** | NASA: **638.51** | Val RMSE: 12.61
+- Seed 42: Val RMSE: **12.05** | Test RMSE: **15.75** | MAE: **11.23** | NASA: **636.07**
+- Seed 123: Val RMSE: **13.44** | Test RMSE: **14.78** | MAE: **10.89** | NASA: **374.17**
+- Seed 456: Val RMSE: **13.60** | Test RMSE: **15.31** | MAE: **10.83** | NASA: **460.40**
+- Seed 789: Val RMSE: **13.06** | Test RMSE: **15.47** | MAE: **11.23** | NASA: **589.65**
+- Seed 1011: Val RMSE: **12.70** | Test RMSE: **15.12** | MAE: **10.80** | NASA: **383.49**
 
-**Analysis**: When GRU converges, it achieves comparable or slightly superior performance (e.g. Test RMSE ~15.05 - 15.71). However, LSTM exhibits significantly higher architectural stability across initializations ($\sigma_{\text{RMSE}} = 0.34$ vs $31.58$ for GRU).
+**Analysis & Resolution of Optimization Deadlock**:
+In prior revisions, hard zero-clamping (`torch.clamp(min=0.0)`) on linear projection heads caused a dying ReLU/gradient deadlock on seed 456 when initial output projections were negative. Replacing hard zero-clamping with smooth positive activation (`nn.functional.softplus`) completely resolved this trap, achieving 100% convergence across all seeds with low variance ($\sigma_{\text{RMSE}} = 0.36$).
+
+**Model Selection Protocol**:
+Model selection between LSTM and GRU is decided strictly on development validation evidence: GRU achieves a lower mean validation RMSE ($12.97 \pm 0.62$ vs $13.39 \pm 0.72$), while LSTM exhibits lower penalty variance on the asymmetric NASA evaluation metric. Both models demonstrate consistent generalization to held-out test data without data leakage.
 
 ---
 
 ## 3. Full 100-Engine Development Refit
 
-When refitting the causal LSTM on all 100 development engines using the optimal validation-selected epoch budget ($E=6$):
-- **Test RMSE (Uncapped)**: **15.8417** cycles
-- **Test MAE (Uncapped)**: **11.5816** cycles
-- **NASA Score**: **427.17**
-- **Test RMSE (Capped at 125)**: **14.5307** cycles
+When refitting the causal recurrent network on all 100 development engines (with feature variance selection and standard scaling re-fitted strictly on all 100 development engines, completely excluding test engines) using the validation-selected epoch budget ($E=6$):
+- **Test RMSE (Uncapped)**: **15.6223** cycles
+- **Test MAE (Uncapped)**: **11.4541** cycles
+- **NASA Asymmetric Score**: **371.74**
+- **Test RMSE (Capped at 125)**: **14.0765** cycles
 
 ---
 
