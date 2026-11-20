@@ -21,11 +21,20 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install torch numpy pandas scikit-learn fastapi uvicorn pydantic pytest httpx requests
+          pip install -r requirements.txt
+
+      - name: Fetch NASA C-MAPSS dataset for CI testing
+        run: |
+          chmod +x scripts/fetch_cmapss.sh
+          ./scripts/fetch_cmapss.sh data/raw
+
+      - name: Run training & export checkpoint for API integration testing
+        run: |
+          PYTHONPATH=. python -m backend.train --epochs 2 --seed 42
 
       - name: Run backend pytest suite
         run: |
-          PYTHONPATH=. pytest -q tests/
+          PYTHONPATH=. pytest -v tests/
 
   frontend-build:
     name: Frontend Typecheck & Build
