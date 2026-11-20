@@ -346,3 +346,17 @@ class CMAPSSDataPipeline:
             train_engine_ids=self.train_units,
             val_engine_ids=self.val_units,
         )
+
+    def get_full_development_windows(self) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+        """Prepare windows across all 100 development engines for optional final-refit.
+
+        Returns:
+            X_all: shape (N, window_size, D) across all 100 development engines
+            y_cap: target capped at rul_cap
+            y_uncap: raw uncapped target
+            endpoints: (unit_id, cycle)
+        """
+        assert self.raw_train_df is not None
+        train_with_rul = add_train_rul_targets(self.raw_train_df, rul_cap=self.rul_cap)
+        all_units = sorted(np.unique(train_with_rul["unit_id"]).tolist())
+        return self.create_sliding_windows(train_with_rul, unit_ids=all_units, include_targets=True)

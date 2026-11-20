@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you utilize AeroPulse in your research or educational work, please cite it as below."
+authors:
+  - family-names: "Pitale"
+    given-names: "Shaaunak"
+title: "AeroPulse: Turbofan Engine Prognostics & Research Interface"
+version: 1.0.0
+date-released: 2026-11-21
+url: "https://github.com/shaaunak/aeropulse"
+repository-code: "https://github.com/shaaunak/aeropulse"
+keywords:
+  - "prognostics"
+  - "turbofan"
+  - "nasa-cmapss"
+  - "deep-learning"
+  - "lstm"
+  - "predictive-maintenance"
+license: MIT

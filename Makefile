@@ -1,4 +1,4 @@
-.PHONY: dev dev-api dev-web test build train export audit clean
+.PHONY: dev dev-api dev-web test build train refit benchmark figures audit clean
 
 # Start both backend and frontend development servers
 dev:
@@ -16,7 +16,7 @@ dev-api:
 dev-web:
 	cd frontend && npm run dev
 
-# Run all tests
+# Run all backend unit and integration tests
 test:
 	PYTHONPATH=. .venv/bin/python -m pytest -v tests/
 
@@ -24,9 +24,21 @@ test:
 build:
 	cd frontend && npm run typecheck && npm run build
 
-# Train PyTorch LSTM, GRU, and baselines on NASA C-MAPSS data
+# Train PyTorch LSTM, GRU, and baselines with 80/20 engine group validation
 train:
 	PYTHONPATH=. .venv/bin/python -m backend.train --epochs 35 --batch-size 128 --seed 42
+
+# Run optional final refit on all 100 development engines using validation-selected epochs
+refit:
+	PYTHONPATH=. .venv/bin/python -m backend.refit --epochs 6 --seed 42
+
+# Run multi-seed reproducibility benchmark (5 seeds)
+benchmark:
+	PYTHONPATH=. .venv/bin/python backend/experiments.py --epochs 12
+
+# Generate publication diagnostic figures
+figures:
+	PYTHONPATH=. .venv/bin/python scripts/generate_research_figures.py
 
 # Export precomputed JSON artifacts for client consumption
 export:
@@ -38,4 +50,4 @@ audit:
 
 # Clean cache directories
 clean:
-	rm -rf .pytest_cache frontend/dist artifacts/metrics/*.tmp
+	rm -rf .pytest_cache frontend/dist artifacts/metrics/*.tmp artifacts/experiments/*.tmp

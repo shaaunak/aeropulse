@@ -1,0 +1,27 @@
+{
+  "description": "Final refit on 100 development engines using validation-selected epoch count",
+  "fixed_epochs": 6,
+  "seed": 42,
+  "train_engines_count": 100,
+  "test_engines_count": 100,
+  "official_test_uncapped": {
+    "rmse": 15.8417,
+    "mae": 11.5816,
+    "nasa_score": 427.17,
+    "sample_count": 100,
+    "mean_error": 1.3131,
+    "std_error": 15.7871,
+    "max_overestimate": 43.5022,
+    "max_underestimate": -38.1586
+  },
+  "official_test_capped": {
+    "rmse": 14.5307,
+    "mae": 10.5116,
+    "nasa_score": 386.21,
+    "sample_count": 100,
+    "mean_error": 2.3831,
+    "std_error": 14.3339,
+    "max_overestimate": 43.5022,
+    "max_underestimate": -38.1586
+  }
+}
